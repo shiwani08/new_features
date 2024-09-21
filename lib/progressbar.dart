@@ -31,45 +31,60 @@ class ProgressBar extends StatelessWidget {
   }
 }
 
-class ProgressBarDemo extends StatelessWidget {
+class ProgressBarDemo extends StatefulWidget {
   const ProgressBarDemo({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: simulateProgress(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(13.0),
-                child: LinearProgressIndicator(
-                  backgroundColor: Colors.grey,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                ),
-              ),
-              SizedBox(height: 20),
-              Text('Taiyaar hora hu bhai...',
-                style: TextStyle(
-                  fontSize: 25,
-                ),),
-            ],
-          );
-        } else if (snapshot.connectionState == ConnectionState.done) {
-          return Text('Chal Chai pine!',
-          style: TextStyle(
-            fontSize: 25,
-          ),);
-        } else {
-          return Text('Code phatt gya');
-        }
-      },
-    );
+  _ProgressBarDemoState createState() => _ProgressBarDemoState();
+}
+
+class _ProgressBarDemoState extends State<ProgressBarDemo> {
+  double progress = 0.0; // Track progress percentage
+
+  @override
+  void initState() {
+    super.initState();
+    simulateProgress();
   }
 
   Future<void> simulateProgress() async {
-    await Future.delayed(Duration(seconds: 3));
+    for (int i = 0; i <= 100; i++) {
+      await Future.delayed(Duration(milliseconds: 50)); // Simulate work
+      setState(() {
+        progress = i / 100; // Update progress
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(13.0),
+          child: LinearProgressIndicator(
+            value: progress, // Set the progress value
+            backgroundColor: Colors.grey,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          ),
+        ),
+        SizedBox(height: 20),
+        Text(
+          '${(progress * 100).toStringAsFixed(0)}%', // Show percentage
+          style: TextStyle(
+            fontSize: 25,
+          ),
+        ),
+        SizedBox(height: 20),
+        if (progress >= 1.0) // Show completion message
+          Text(
+            'Chal Chai pine!',
+            style: TextStyle(
+              fontSize: 25,
+            ),
+          ),
+      ],
+    );
   }
 }
