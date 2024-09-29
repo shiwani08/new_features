@@ -20,12 +20,18 @@ class ProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Progress Bar Example'),
-      ),
-      body: Center(
-        child: ProgressBarDemo(),
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Text('Progress Bar Example'),
+          ),
+        ),
+        body: Center(
+          child: ProgressBarDemo(),
+        ),
       ),
     );
   }
@@ -82,6 +88,7 @@ class _ProgressBarDemoState extends State<ProgressBarDemo> {
             'Chal Chai pine!',
             style: TextStyle(
               fontSize: 25,
+              fontWeight: FontWeight.bold,
             ),
           ),
       ],
